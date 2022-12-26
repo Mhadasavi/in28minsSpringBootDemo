@@ -2,9 +2,11 @@ package com.uc.controller;
 
 import com.uc.bean.Item;
 import com.uc.service.ItemDaoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -28,7 +30,14 @@ public class ItemController {
     }
 
     @PostMapping("/createItem")
-    public void createItem(@RequestBody Item item) {
-        service.createItem(item);
+    public ResponseEntity<Item> createItem(@RequestBody Item item) {
+        Item createdItem = service.createItem(item);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdItem.getId())
+                .toUri();
+        return ResponseEntity.created(location).build();
+
     }
 }
