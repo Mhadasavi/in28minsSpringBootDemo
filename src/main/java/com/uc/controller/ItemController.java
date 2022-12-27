@@ -1,5 +1,6 @@
 package com.uc.controller;
 
+import com.uc.Exception.ItemNotFoundException;
 import com.uc.bean.Item;
 import com.uc.service.ItemDaoService;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,11 @@ public class ItemController {
 
     @GetMapping("/getItem/{id}")
     public Item getItem(@PathVariable int id) {
-        return service.getItem(id);
+        Item item=service.getItem(id);
+        if(item==null){
+            throw new ItemNotFoundException(String.format("Item with id : %s not found", id));
+        }
+        return item;
     }
 
     @PostMapping("/createItem")
