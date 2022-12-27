@@ -27,7 +27,7 @@ public class ItemDaoService {
 
     public Item getItem(int id) {
 //        Predicate<? super Item> predicate = item -> item.getId() == id;
-        return itemList.stream().filter(item -> item.getId() == id).findFirst().get();
+        return itemList.stream().filter(item -> item.getId() == id).findFirst().orElse(null);
     }
 
     public Item createItem(Item item) {
