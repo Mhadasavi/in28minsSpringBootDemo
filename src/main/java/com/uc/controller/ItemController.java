@@ -27,8 +27,8 @@ public class ItemController {
 
     @GetMapping("/getItem/{id}")
     public Item getItem(@PathVariable int id) {
-        Item item=service.getItem(id);
-        if(item==null){
+        Item item = service.getItem(id);
+        if (item == null) {
             throw new ItemNotFoundException(String.format("Item with id : %s not found", id));
         }
         return item;
@@ -44,5 +44,10 @@ public class ItemController {
                 .toUri();
         return ResponseEntity.created(location).build();
 
+    }
+
+    @DeleteMapping("/deleteItem/{id}")
+    public void deleteItem(@PathVariable int id) {
+        service.deleteItemById(id);
     }
 }
