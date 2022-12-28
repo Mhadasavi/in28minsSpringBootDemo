@@ -35,4 +35,11 @@ public class ItemDaoService {
         itemList.add(item);
         return item;
     }
+
+    public void deleteItemById(int id) {
+        if (getItem(id) == null) {
+            throw new RuntimeException("Unable to delete item : " + id);
+        }
+        itemList.removeIf(user -> user.getId() == id);
+    }
 }
