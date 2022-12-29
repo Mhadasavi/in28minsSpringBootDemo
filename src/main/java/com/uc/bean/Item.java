@@ -1,15 +1,20 @@
 package com.uc.bean;
 
+import jakarta.validation.constraints.*;
+
 import java.time.LocalDate;
 
 public class Item {
 
     private int id;
+    @Size(min = 2, message = "Name should be of minimum 2 characters")
     private String name;
     private double length;
     private double breadth;
     private String unit;
+    @Min(value = 1, message = "Rate must be greater than or equal to 1")
     private double rate;
+    @PastOrPresent
     private LocalDate date;
 
     public LocalDate getDate() {
@@ -28,7 +33,7 @@ public class Item {
         this.breadth = breadth;
         this.unit = unit;
         this.rate = rate;
-        this.date=date;
+        this.date = date;
     }
 
     public int getId() {

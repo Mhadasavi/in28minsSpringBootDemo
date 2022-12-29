@@ -3,6 +3,7 @@ package com.uc.controller;
 import com.uc.Exception.ItemNotFoundException;
 import com.uc.bean.Item;
 import com.uc.service.ItemDaoService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -35,7 +36,7 @@ public class ItemController {
     }
 
     @PostMapping("/createItem")
-    public ResponseEntity<Item> createItem(@RequestBody Item item) {
+    public ResponseEntity<Item> createItem(@Valid @RequestBody Item item) {
         Item createdItem = service.createItem(item);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
