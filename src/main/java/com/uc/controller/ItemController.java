@@ -11,6 +11,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+/* To access swagger, URL is http://localhost:8080/swagger-ui/index.html */
+
 @RestController
 public class ItemController {
 
