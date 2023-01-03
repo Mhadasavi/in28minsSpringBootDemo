@@ -14,6 +14,7 @@ import java.util.List;
 /* To access swagger, URL is http://localhost:8080/swagger-ui/index.html */
 
 @RestController
+@RequestMapping("/V1")
 public class ItemController {
 
     //    @Autowired
