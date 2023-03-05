@@ -1,0 +1,1 @@
+insert into ITEM values(1, 'abcd', 10.0, 10.0,"Pcs", 1000.0, current_date(),)
