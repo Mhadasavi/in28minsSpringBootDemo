@@ -3,13 +3,22 @@ package com.uc.bean;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
+/*
+* To access h2 db, url-http://localhost:8080/h2-console
+*/
 //@JsonIgnoreProperties("name")
+@Entity
 public class Item {
 
+    @Id
+    @GeneratedValue
     private int id;
     @Size(min = 2, message = "Name should be of minimum 2 characters")
 //    @JsonProperty("item_name")
@@ -21,6 +30,9 @@ public class Item {
     private double rate;
     @PastOrPresent
     private LocalDate date;
+
+    public Item() {
+    }
 
     public LocalDate getDate() {
         return date;
