@@ -1,1 +1,1 @@
-insert into ITEM values(1, 'abcd', 10.0, 10.0,"Pcs", 1000.0, current_date(),)
+insert into Item values(1, 10.0, current_date(),12.0,'Raw', 1000.0,'Pcs')
