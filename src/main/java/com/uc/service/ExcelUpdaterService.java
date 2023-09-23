@@ -2,9 +2,7 @@ package com.uc.service;
 
 import com.uc.bean.Item;
 import com.uc.bean.Quote;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellCopyPolicy;
-import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.context.annotation.Configuration;
@@ -57,45 +55,23 @@ public class ExcelUpdaterService {
         customerNameAndDateRow.getCell(0).setCellValue(quote.getCustomerName());
         customerNameAndDateRow.getCell(3).setCellValue(LocalDate.now());
 
-        XSSFRow baseRow = sheet.getRow(15); // Row 15 will be used as a template for formatting
-
         // Calculate the number of rows needed based on the number of items
-        int numRowsToAdd = quote.getItems().size()-1;
+        int numRowsToAdd = quote.getItems().size() - 1;
         // Shift existing rows down to make space for the new rows
         int startShiftRow = 16; // Start shifting from row 16
-        int endShiftRow = sheet.getLastRowNum(); // Shift all rows below the last row
-        DataFormatter formatter = new DataFormatter();
-        sheet.shiftRows(startShiftRow, startShiftRow+28, numRowsToAdd);
+        sheet.shiftRows(startShiftRow, startShiftRow + 28, numRowsToAdd);
         // Insert new rows with formatting from the baseRow
         for (int i = 0; i < numRowsToAdd; i++) {
             int newRowNum = 16 + i; // Start from row 16 and increment for each new row
-            sheet.copyRows(startShiftRow - 1,startShiftRow - 1, newRowNum, new CellCopyPolicy());
-//            createRow(newRowNum);
-//            newRow.setHeight((short) -1);
-             //creating formatter using the default locale
-//            Cell cell = sheet.getRow(i).getCell(0);
-//            for (int j = 0; j < baseRow.getLastCellNum(); j++) {
-//                String cellValue = formatter.formatCellValue(baseRow.getCell(j)); //Returns the formatted value of a cell as a String regardless of the cell type.
-////                newRow.createCell(j).setCellValue(cellValue);
-////                newRow.createCell(j).setCellValue(baseRow.getCell(j).getStringCellValue());
-//            }
-            // Copy formatting (cell styles) from the baseRow to the new row
-//            for (int j = 0; j < baseRow.getPhysicalNumberOfCells(); j++) {
-//                XSSFCell baseCell = baseRow.getCell(j);
-//                XSSFCell newCell = newRow.createCell(j);
-//
-//                if (baseCell != null) {
-//                    XSSFCellStyle cellStyle = baseCell.getCellStyle();
-//                    newCell.setCellStyle(cellStyle);
-//                }
-//            }
+            sheet.copyRows(startShiftRow - 1, startShiftRow - 1, newRowNum, new CellCopyPolicy());
         }
 
         // Rest of your code for populating data in the newly added rows goes here
         int count = 1;
         int currentItemRow = 15; // Update this to start from the first newly added row
-        double totalArea = 0d;
+
         double totalPrice = 0d;
+        double totalArea = 0;
         for (Item item : quote.getItems()) {
             if (item != null) {
                 XSSFRow itemRow = sheet.getRow(currentItemRow);
@@ -114,18 +90,38 @@ public class ExcelUpdaterService {
                 double price = item.getRate() * area;
                 itemRow.getCell(10).setCellValue(price);
 
-                totalArea+=area;
-                totalPrice+=price;
-                currentItemRow ++; // Move to the next newly added row
+
+                totalArea += area;
+                totalPrice += price;
+                currentItemRow++; // Move to the next newly added row
             }
         }
-        XSSFRow areaAndPriceRow = sheet.getRow(currentItemRow);
-        areaAndPriceRow.getCell(7).setCellValue(totalArea);
-        areaAndPriceRow.getCell(10).setCellValue(totalPrice);
+//        XSSFRow areaAndPriceRow = sheet.getRow(currentItemRow);
+//        areaAndPriceRow.getCell(7).setCellValue(totalArea);
+//        areaAndPriceRow.getCell(10).setCellValue(totalPrice);
+        updateQuoteAmount(quote, sheet, currentItemRow, totalArea, totalPrice);
     }
-
 
     private double calculateArea(Double width, Double height) {
         return width * height * 8 / 92903;
+    }
+
+    private void updateQuoteAmount(Quote quote, XSSFSheet sheet, int currentItemRow, double totalArea, double totalPrice){
+        XSSFRow areaAndPriceRow = sheet.getRow(currentItemRow);
+        areaAndPriceRow.getCell(7).setCellValue(totalArea);
+        areaAndPriceRow.getCell(10).setCellValue(totalPrice);
+
+        sheet.getRow(currentItemRow+1).getCell(10).setCellValue(quote.getInstallationCharge());
+        double gstAmount = (totalPrice * quote.getGstCharge()) / 100;
+        sheet.getRow(currentItemRow+2).getCell(10).setCellValue(gstAmount);
+        double amountWithoutCartage = gstAmount + totalPrice;
+        sheet.getRow(currentItemRow+3).getCell(10).setCellValue(amountWithoutCartage);
+        sheet.getRow(currentItemRow+3).getCell(4).setCellValue(amountWithoutCartage/totalArea);
+        sheet.getRow(currentItemRow+4).getCell(10).setCellValue(quote.getCartage());
+        sheet.getRow(currentItemRow+5).getCell(10).setCellValue(amountWithoutCartage+quote.getCartage());
+
+
+
+
     }
 }
