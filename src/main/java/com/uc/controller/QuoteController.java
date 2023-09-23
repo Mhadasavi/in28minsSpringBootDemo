@@ -24,7 +24,7 @@ public class QuoteController {
     @PostMapping("/jpa/submitQuote")
     public Quote saveQuote(@Valid @RequestBody Quote quote) {
         if (quote != null) {
-            quote.setId(0);
+//            quote.setId(0);
             quoteRepository.save(quote);
         }
         return quote;
@@ -51,7 +51,7 @@ public class QuoteController {
     @GetMapping("/jpa/convertToPdf/{id}")
     public void convertToPdf(@PathVariable int id) throws IOException {
         Quote quote = getQuote(id);
-        if(quote !=null){
+        if (quote != null) {
             excelUpdaterService.updateExcelFile(quote);
         }
 

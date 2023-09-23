@@ -16,9 +16,9 @@ public class ItemDaoService {
     private static int autoIncrementId = 0;
 
     static {
-        itemList.add(new Item(++autoIncrementId, "item A", 10, 10, "piece", 10, LocalDate.now()));
-        itemList.add(new Item(++autoIncrementId, "item B", 20, 20, "piece", 20, LocalDate.now()));
-        itemList.add(new Item(++autoIncrementId, "item C", 30, 30, "piece", 30, LocalDate.now()));
+//        itemList.add(new Item(++autoIncrementId, "item A", 10, 10, "piece", 10, LocalDate.now()));
+//        itemList.add(new Item(++autoIncrementId, "item B", 20, 20, "piece", 20, LocalDate.now()));
+//        itemList.add(new Item(++autoIncrementId, "item C", 30, 30, "piece", 30, LocalDate.now()));
     }
 
     public List<Item> getAllItems() {

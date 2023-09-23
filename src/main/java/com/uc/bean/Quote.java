@@ -11,7 +11,7 @@ public class Quote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int id;
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "Quote_Item",
             joinColumns = @JoinColumn(name = "quote_id"),

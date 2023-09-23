@@ -28,6 +28,7 @@ public class Item {
     private String unit;
     @Min(value = 1, message = "Rate must be greater than or equal to 1")
     private double rate;
+    private double quantity;
     @PastOrPresent
     private LocalDate date;
 
@@ -42,7 +43,7 @@ public class Item {
         this.date = date;
     }
 
-    public Item(int id, String name, double length, double breadth, String unit, double rate, LocalDate date) {
+    public Item(int id, String name, double length, double breadth, String unit, double rate, double quantity, LocalDate date) {
         super();
         this.id = id;
         this.name = name;
@@ -50,6 +51,7 @@ public class Item {
         this.breadth = breadth;
         this.unit = unit;
         this.rate = rate;
+        this.quantity = quantity;
         this.date = date;
     }
 
@@ -87,6 +89,14 @@ public class Item {
 
     public String getUnit() {
         return unit;
+    }
+
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
     }
 
     public void setUnit(String unit) {
