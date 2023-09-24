@@ -11,13 +11,20 @@ public class Quote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int id;
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "Quote_Item",
             joinColumns = @JoinColumn(name = "quote_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id")
     )
     public List<Item> items;
+    @OneToOne
+    @JoinTable(
+            name = "Quote_ItemDescription",
+            joinColumns = @JoinColumn(name = "quote_id"),
+            inverseJoinColumns = @JoinColumn(name = "itemDescription_id")
+    )
+    public ItemDescription itemDescription;
     @Column(name = "customerName")
     public String customerName;
     @Column(name = "installationCharge")
@@ -29,11 +36,10 @@ public class Quote {
     @Column(name = "grandTotal")
     public Double grandTotal;
 
-
     public Quote() {
     }
 
-    public Quote(int id, List<Item> items, String customerName, Double installationCharge, Double gstCharge, Double cartage, Double grandTotal) {
+    public Quote(int id, List<Item> items, String customerName, Double installationCharge, Double gstCharge, Double cartage, Double grandTotal, ItemDescription itemDescription) {
         this.id = id;
         this.items = items;
         this.customerName = customerName;
@@ -41,6 +47,7 @@ public class Quote {
         this.gstCharge = gstCharge;
         this.cartage = cartage;
         this.grandTotal = grandTotal;
+        this.itemDescription = itemDescription;
     }
 
     public int getId() {
@@ -71,6 +78,10 @@ public class Quote {
         return grandTotal;
     }
 
+    public ItemDescription getItemDescription() {
+        return itemDescription;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -98,4 +109,9 @@ public class Quote {
     public void setGrandTotal(Double grandTotal) {
         this.grandTotal = grandTotal;
     }
+
+    public void setItemDescription(ItemDescription itemDescription) {
+        this.itemDescription = itemDescription;
+    }
+
 }
