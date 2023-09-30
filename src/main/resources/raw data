@@ -1,0 +1,40 @@
+{
+  "id": 3,
+  "items": [
+    {
+      "id": 1,
+      "name": "3 Track",
+      "length": 58.6,
+      "breadth": 75.6,
+      "unit": "pieces",
+      "rate": 650,
+      "quantity": 1,
+      "date": "2023-09-19"
+    },
+      {
+        "id": 2,
+        "name": "3 Track",
+        "length": 68.4,
+        "breadth": 59,
+        "unit": "pieces",
+        "rate": 650,
+        "quantity": 1,
+        "date": "2023-09-19"
+      },
+      {
+        "id": 3,
+        "name": "3 Track",
+        "length": 116,
+        "breadth": 96.4,
+        "unit": "pieces",
+        "rate": 650,
+        "quantity": 1,
+        "date": "2023-09-19"
+      }
+  ],
+  "customerName": "Gurgaon",
+  "installationCharge": 0,
+  "gstCharge": 0,
+  "cartage": 0,
+  "grandTotal": 0
+}

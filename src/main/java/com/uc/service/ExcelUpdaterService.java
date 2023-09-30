@@ -1,18 +1,20 @@
 package com.uc.service;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.uc.bean.Item;
 import com.uc.bean.Quote;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellCopyPolicy;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.time.LocalDate;
 
 @Configuration
@@ -34,6 +36,7 @@ public class ExcelUpdaterService {
                 workbook.write(outputStream);
                 outputStream.close();
 
+                convertToPdf(workbook);
                 // Close the workbook and input stream
                 workbook.close();
                 System.out.println("Cell updated successfully.");
@@ -103,7 +106,7 @@ public class ExcelUpdaterService {
     }
 
     private double calculateArea(Double width, Double height) {
-        return width * height * 8 / 92903;
+        return width * height * 8 / 144;
     }
 
     private void updateQuoteAmount(Quote quote, XSSFSheet sheet, int currentItemRow, double totalArea, double totalPrice){
@@ -119,9 +122,33 @@ public class ExcelUpdaterService {
         sheet.getRow(currentItemRow+3).getCell(4).setCellValue(amountWithoutCartage/totalArea);
         sheet.getRow(currentItemRow+4).getCell(10).setCellValue(quote.getCartage());
         sheet.getRow(currentItemRow+5).getCell(10).setCellValue(amountWithoutCartage+quote.getCartage());
+    }
 
+    private void convertToPdf(XSSFWorkbook workbook){
+        try {
+//            FileInputStream excelFile = new FileInputStream(new File("input.xlsx"));
+//            Workbook workbook = new XSSFWorkbook(excelFile);
+            Document pdfDocument = new Document();
+            FileOutputStream pdfFile = new FileOutputStream(new File("F:\\Repo\\Resources\\output.pdf"));
+            PdfWriter.getInstance(pdfDocument, pdfFile);
 
+            pdfDocument.open();
+            for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
+                Sheet sheet = workbook.getSheetAt(i);
+                for (Row row : sheet) {
+                    for (Cell cell : row) {
+                        pdfDocument.add(new Paragraph(cell.toString()));
+                    }
+                }
+            }
 
+            pdfDocument.close();
+            pdfFile.close();
+            workbook.close();
 
+            System.out.println("Excel to PDF conversion completed successfully.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
